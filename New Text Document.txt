@@ -1,0 +1,43 @@
+ DataTable dt = new DataTable();
+        public static SqlConnection conn = new SqlConnection(@"Data Source=DESKTOP-R08TGCI\SQLEXPRESS;Initial Catalog=QL;Integrated Security=True");
+        public Form1()
+        {
+            InitializeComponent();
+            conn.Open();
+        }
+
+        public static DataTable GetData(string sql)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            return dt;
+        }
+
+        public static void runSql(string sql)
+        {
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            cmd.Dispose();
+            cmd = null;
+        }
+
+        public  void LoadData()
+        {
+            string sql = "select ROW_NUMBER() OVER(ORDER BY Ma) as STT, * from NV";
+            dt = GetData(sql);
+            dataGridView1.DataSource = dt;
+            dataGridView1.Columns[0].HeaderText = "STT";
+            dataGridView1.Columns[1].HeaderText = "Mã";
+            dataGridView1.Columns[2].HeaderText = "Tên";
+
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
+        }
