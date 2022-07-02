@@ -41,3 +41,6 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
         }
+
+
+select ROW_NUMBER() over(order by Ma) as STT, * from NV
